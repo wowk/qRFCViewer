@@ -1,0 +1,13 @@
+<!DOCTYPE RCC><RCC version="1.0">
+  <qresource>
+    <file>../images/open.png</file>
+    <file>../images/find.png</file>
+    <file>../images/forward.png</file>
+    <file>../images/backward.png</file>
+    <file>../images/rfcview.png</file>
+    <file>../images/load.png</file>
+    <file>../images/print.png</file>
+    <file>../images/close.png</file>
+  </qresource>
+    </RCC>
+    
