@@ -11,14 +11,16 @@ Please view the previous version at http://saghul.github.com/qrfcview-osx which 
 Build 
 ----------
 - using CLI
-::
+```
     cd to_folder
     qmake
     make
+```
 
 - using Qt Creator
-::
+```
     import project then build all
+```
 
 License
 --------------
