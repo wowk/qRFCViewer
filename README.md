@@ -1,4 +1,4 @@
-qRFCView: a RFC viewer - Cross platform thanks to Qt5
+qRFCView: a RFC viewer - Built on macOS and with Qt5 
 ==================================
 Changes
 --------
