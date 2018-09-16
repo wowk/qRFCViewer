@@ -3,7 +3,7 @@ qRFCViewer: a RFC viewer - Built on macOS and with Qt5
 Changes
 --------
 - Built under Qt5 (5.x) only (not compatible with Qt4) 
-- HiDPI for icons (new icons added for modern look and feel, creditability for icons' authors is added to about section)
+- HiDPI for icons (new icons added for modern look and feel, creditability for icons' authors is added to "About" menu)
 - Default font is Courier
 
 Please view the previous version at http://saghul.github.com/qrfcview-osx which build under Qt4
