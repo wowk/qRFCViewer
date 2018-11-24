@@ -1,8 +1,8 @@
 /****************************************************************************
-  
+
     qRFCView, A smart IETF RFC viewer based on the Qt4 library.
     Copyright (C) 2005 Mitsubishi Electric ITE-TCL, R. Rollet (rollet@tcl.ite.mee.com)
-    
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -33,40 +33,44 @@ class QNetworkReply;
 class QUrl;
 class QHttpResponseHeader;
 class QFile;
-class QRFCLoader : public QObject
-{
-Q_OBJECT
-private:
-    struct RFCDesc_t
-    {
-      uint32_t iRFCNum;
-      QFile *pFile;
+class QRFCLoader : public QObject {
+    Q_OBJECT
+  private:
+    struct RFCDesc_t {
+        uint32_t iRFCNum;
+        QFile *pFile;
     };
-    
-public:
+
+  public:
     QRFCLoader(QObject *parent = 0);
     ~QRFCLoader();
 
     void SetDirectories(QStringList &qDirList, uint8_t iDefaultDir);
     void GetFile(uint32_t iRFCNum);
     //QHttp *GetQHttp() {return m_qHttp;}
-    QNetworkAccessManager *GetQNetworkAccessManager() {return m_qNetworkAccessManager;}
-    QNetworkReply *GetReply() { return m_qReply; }
-    QString GetDir() {return m_qDir;}
+    QNetworkAccessManager *GetQNetworkAccessManager() {
+        return m_qNetworkAccessManager;
+    }
+    QNetworkReply *GetReply() {
+        return m_qReply;
+    }
+    QString GetDir() {
+        return m_qDir;
+    }
     void SetDownloadURL(QUrl &qURL);
-    
-signals:
-    void start(const QString &sFilename); 
-    void done(const QString &sFilename); 
+
+  signals:
+    void start(const QString &sFilename);
+    void done(const QString &sFilename);
     void downloadUpdate(qint64 bytesRead, qint64 totalBytes);
-       
-private slots:
+
+  private slots:
     void startDownload(int iRequestID);
     void fileDownload(int iRequestID, QNetworkReply *reply);
     void onDownloading(qint64 bytesRead, qint64 totalBytes);
     void onFinished(QNetworkReply *reply);
-    
-private:
+
+  private:
     QString m_qDir;
     QString m_qIETFSite, m_qIETFPath;
     int m_iCurrentRequestID;

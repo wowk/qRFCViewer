@@ -1,5 +1,5 @@
 /****************************************************************************
-  
+
     qRFCView, A smart IETF RFC viewer based on the Qt4 library.
     Copyright (C) 2005 Mitsubishi Electric ITE-TCL, R. Rollet (rollet@tcl.ite.mee.com)
 
@@ -36,21 +36,20 @@ class CDialogFind;
 class QTabWidget;
 class QFileDialog;
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
-public:
+  public:
     MainWindow();
-    
-protected:
-    void closeEvent(QCloseEvent *event);   
-    
-public slots:
+
+  protected:
+    void closeEvent(QCloseEvent *event);
+
+  public slots:
     void RFCLoad(uint32_t);
     void RFCReady(const QString &qFileName);
-    
-private slots:
+
+  private slots:
     void getrfc();
     void findOpen();
     void findnext();
@@ -62,15 +61,15 @@ private slots:
     void open_dialog_finished(int result);
     void close_tab(int index);
     MdiChild *createMdiChild(const QString &qTitle);
-    
+
     void RFCStart(const QString &qFilename);
     void updateRFCProgress(qint64 bytesRead, qint64 totalBytes);
     void forward();
     void backward();
     void print();
-    
-    
-private:
+
+
+  private:
     void createActions();
     void createMenus();
     void createToolBars();
@@ -92,7 +91,7 @@ private:
     QToolBar *editToolBar;
     QAction *openAct, *printAct, *closeAct, *loadAct;
     QAction *exitAct;
-    QAction *copyAct;    
+    QAction *copyAct;
     QAction *setFontAct;
     /*
     QAction *closeAct;

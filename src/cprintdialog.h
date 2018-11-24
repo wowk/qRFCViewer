@@ -1,5 +1,5 @@
 /****************************************************************************
-  
+
     qRFCView, A smart IETF RFC viewer based on the Qt4 library.
     Copyright (C) 2005 Mitsubishi Electric ITE-TCL, R. Rollet (rollet@tcl.ite.mee.com)
 
@@ -25,13 +25,12 @@
 /**
 @author Romain Rollet
 */
-class CPrintDialog : public QPrintDialog
-{
-Q_OBJECT
-public:
+class CPrintDialog : public QPrintDialog {
+    Q_OBJECT
+  public:
     CPrintDialog(QPrinter *p, QWidget *parent = 0);
     ~CPrintDialog();
-  
+
 };
 
 #endif

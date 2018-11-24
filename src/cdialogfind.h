@@ -1,5 +1,5 @@
 /****************************************************************************
-  
+
     qRFCView, A smart IETF RFC viewer based on the Qt4 library.
     Copyright (C) 2005 Mitsubishi Electric ITE-TCL, R. Rollet (rollet@tcl.ite.mee.com)
 
@@ -33,25 +33,24 @@
 /**
 @author Romain Rollet
 */
-class CDialogFind : public QDialog
-{
-Q_OBJECT
-public:
+class CDialogFind : public QDialog {
+    Q_OBJECT
+  public:
     CDialogFind( QWidget *parent = 0, QStringList *pPrevResearch=NULL, uint32_t iOptionFlags=0);
     ~CDialogFind();
     QString GetTextToFind();
     uint32_t GetOptionFlags();
     void SetOptionFlags(uint32_t iOptionFlags);
-    
-signals:
+
+  signals:
     void findnext();
-    
-private slots:
+
+  private slots:
     void find();
-        
-private:
-  Ui_findDialog m_ui;
-  
+
+  private:
+    Ui_findDialog m_ui;
+
 };
 
 #endif

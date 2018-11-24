@@ -1,8 +1,8 @@
 /****************************************************************************
-  
+
     qRFCView, A smart IETF RFC viewer based on the Qt4 library.
     Copyright (C) 2005 Mitsubishi Electric ITE-TCL, R. Rollet (rollet@tcl.ite.mee.com)
-    
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -22,40 +22,33 @@
 
 #include "TitleItem.h"
 
-CTitleItem::CTitleItem(const QString &qTitle, const QString &qAnchor, CTitleItem *parent)
-{
+CTitleItem::CTitleItem(const QString &qTitle, const QString &qAnchor, CTitleItem *parent) {
     parentItem = parent;
     m_qTitle= qTitle;
     m_qAnchor=qAnchor;
 }
 
-CTitleItem::~CTitleItem()
-{
+CTitleItem::~CTitleItem() {
     qDeleteAll(childItems);
 }
 
-void CTitleItem::appendChild(CTitleItem *item)
-{
+void CTitleItem::appendChild(CTitleItem *item) {
     childItems.append(item);
 }
 
-CTitleItem *CTitleItem::child(int row)
-{
+CTitleItem *CTitleItem::child(int row) {
     return childItems.value(row);
 }
 
-int CTitleItem::childCount() const
-{
+int CTitleItem::childCount() const {
     return childItems.count();
 }
 
-CTitleItem *CTitleItem::parent()
-{
+CTitleItem *CTitleItem::parent() {
     return parentItem;
 }
 
-int CTitleItem::row() const
-{
+int CTitleItem::row() const {
     if (parentItem)
         return parentItem->childItems.indexOf(const_cast<CTitleItem*>(this));
 

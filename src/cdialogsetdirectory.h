@@ -1,5 +1,5 @@
 /****************************************************************************
-  
+
     qRFCView, A smart IETF RFC viewer based on the Qt4 library.
     Copyright (C) 2005 Mitsubishi Electric ITE-TCL, R. Rollet (rollet@tcl.ite.mee.com)
 
@@ -27,25 +27,28 @@
 @author Romain Rollet
 */
 
-class CDialogSetDirectory : public QDialog
-{
-Q_OBJECT
-public:
+class CDialogSetDirectory : public QDialog {
+    Q_OBJECT
+  public:
     CDialogSetDirectory(QStringList *pDirectoryList, uint8_t iDefaultDir, QString &qRFCURL, QWidget *parent = 0);
 
     ~CDialogSetDirectory();
     int GetDirectoryList(QStringList *pDirectoryList);
-    uint8_t GetDefaultDir() {return m_iDefaultDirRow;}
-    QString GetRFCURL() {return m_ui.urlLineEdit->text();}
-    
-private slots:
+    uint8_t GetDefaultDir() {
+        return m_iDefaultDirRow;
+    }
+    QString GetRFCURL() {
+        return m_ui.urlLineEdit->text();
+    }
+
+  private slots:
     void addDirectoryToList();
-    void remDirectoryFromList();  
+    void remDirectoryFromList();
     void setDefaultDirectory();
-    
-private:
-  Ui_directoryDialog m_ui;
-  uint8_t m_iDefaultDirRow;  
+
+  private:
+    Ui_directoryDialog m_ui;
+    uint8_t m_iDefaultDirRow;
 };
 
 #endif

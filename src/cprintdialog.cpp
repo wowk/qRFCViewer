@@ -1,5 +1,5 @@
 /****************************************************************************
-  
+
     qRFCView, A smart IETF RFC viewer based on the Qt4 library.
     Copyright (C) 2005 Mitsubishi Electric ITE-TCL, R. Rollet (rollet@tcl.ite.mee.com)
 
@@ -19,12 +19,10 @@
 *********************************************************************************/
 #include <cprintdialog.h>
 
-CPrintDialog::CPrintDialog( QPrinter *p, QWidget *parent):QPrintDialog(p, parent)
-{
-  setMinMax(1, 100);
+CPrintDialog::CPrintDialog( QPrinter *p, QWidget *parent):QPrintDialog(p, parent) {
+    setMinMax(1, 100);
 
 }
 
-CPrintDialog::~CPrintDialog()
-{
+CPrintDialog::~CPrintDialog() {
 }
