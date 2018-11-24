@@ -11,7 +11,9 @@ HEADERS += mainwindow.h \
            cdialogsetdirectory.h \
            rfcloader.h \
            cdialogfind.h \
-           cprintdialog.h
+           cprintdialog.h \
+           translator.h
+
 SOURCES += rfcview.cpp \
            mainwindow.cpp \
            mdichild.cpp \
@@ -21,7 +23,8 @@ SOURCES += rfcview.cpp \
            cdialogsetdirectory.cpp \
            rfcloader.cpp \
            cdialogfind.cpp \
-           cprintdialog.cpp
+           cprintdialog.cpp \
+           translator.cpp
 TARGET=../bin/qRFCView
 CONFIG += qt release
 QT += network core gui widgets printsupport
