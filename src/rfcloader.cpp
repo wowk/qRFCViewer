@@ -38,7 +38,7 @@ QRFCLoader::QRFCLoader(QObject *parent)
   m_qDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/qRFCView";
   QDir dir = QDir(m_qDir);
   dir.mkpath(m_qDir);
-  QUrl url = QUrl(QString("http://www.ietf.org/rfc/"));
+  QUrl url = QUrl(QString("https://www.ietf.org/rfc/"));
   SetDownloadURL(url);
   m_iCurrentRequestID=-1;
 }
@@ -59,10 +59,11 @@ void QRFCLoader::SetDownloadURL(QUrl &qURL)
 void QRFCLoader::GetFile(uint32_t iRFCNum)
 {
   QString qFilename;
-  
   qFilename = m_qDir + "/rfc" + QString::number(iRFCNum) +".txt";
-  if ( QFile::exists( qFilename ) )
+  QFile qFile(qFilename);
+  if ( qFile.isOpen() && qFile.size() > 0 )
   {
+    qFile.close();
     emit done(qFilename);
     return;
   }    
@@ -75,13 +76,13 @@ void QRFCLoader::GetFile(uint32_t iRFCNum)
   
   if (!sRFCDesc.pFile->open(QIODevice::WriteOnly)) {
      delete sRFCDesc.pFile;  
-     QMessageBox::information(NULL, tr("RFCView"),
+     QMessageBox::information(nullptr, tr("RFCView"),
                                      tr("Unable to write RFC %1")
                                      .arg(iRFCNum));
      
      return;
   }    
-  QString qUrl= QString("http://") + m_qIETFSite + m_qIETFPath + QString("rfc%1.txt").arg(iRFCNum, 4, 10, QChar('0'));
+  QString qUrl= QString("https://") + m_qIETFSite + m_qIETFPath + QString("rfc%1.txt").arg(iRFCNum, 4, 10, QChar('0'));
   
   
   qDebug() << qUrl;
@@ -129,7 +130,7 @@ void QRFCLoader::fileDownload(int iRequestID, QNetworkReply *reply)
   if (!status_code.isValid()) {
       return;
   } else {
-    statusCode = status_code.toInt();
+    statusCode = status_code.toUInt();
   }
   if ( m_RequestList.contains(iRequestID) )
   {
@@ -147,9 +148,9 @@ void QRFCLoader::fileDownload(int iRequestID, QNetworkReply *reply)
         emit done( qFilename );
       }
       else
-        QMessageBox::information(NULL, tr("RFCView"),
+        QMessageBox::information(nullptr, tr("RFCView"),
                                       tr("Unable to load RFC %1: ")
-                                      .arg(sRFCDesc.iRFCNum) +  reply->error() ) ;
+                                      .arg(sRFCDesc.iRFCNum) +  QString(reply->error()) ) ;
   
       m_RequestList.remove(iRequestID);
       m_iCurrentRequestID--;
