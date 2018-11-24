@@ -22,7 +22,11 @@
 #define QRFCEDITOR_H
 
 #include <qtextbrowser.h>
+#include  "qtranslator.h"
+
+
 class QStringList;
+
 
 /**
 @author Romain Rollet
@@ -38,14 +42,21 @@ class QRFCEditor : public QTextBrowser {
     void scrollToAnchor2 ( const QString & name );
     bool isBackwardAvailable ();
     bool isForwardAvailable ();
+    void mousePressEvent(QMouseEvent *ev);
+    void mouseReleaseEvent(QMouseEvent *e);
 
   signals:
     void RFCReq(uint32_t); // Signal emitted when a new RFC is required
+    void translate(QString s);
+
   public slots:
     void backward ();
     void forward ();
+    void translateFinished(QString s);
+    void translateError(QString s);
 
   private:
+    QTranslator* m_translator;
     QList<int> m_qPositionPath;
     int m_iCurrentPositionIdx;
 };

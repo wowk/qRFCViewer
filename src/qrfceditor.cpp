@@ -19,11 +19,16 @@
 *********************************************************************************/
 
 #include <QtGui>
+#include <QToolTip>
 #include "qrfceditor.h"
 
 QRFCEditor::QRFCEditor(QWidget *parent)
     : QTextBrowser(parent) {
     m_iCurrentPositionIdx=0;
+    m_translator = new QTranslator(this);
+    connect(this, SIGNAL(translate(QString)), m_translator, SLOT(translate(QString)));
+    connect(m_translator, SIGNAL(finish(QString)), this, SLOT(translateFinished(QString)));
+    connect(m_translator, SIGNAL(error(QString)), this, SLOT(translateError(QString)));
 }
 
 
@@ -98,10 +103,40 @@ void QRFCEditor::forward () {
     }
 }
 
+void QRFCEditor::translateFinished(QString s) {
+    QFontMetrics fontMetrics(this->font());
+    QToolTip::showText(this->cursor().pos(), s, this, fontMetrics.tightBoundingRect(s), 2000);
+}
+
+void QRFCEditor::translateError(QString s) {
+
+}
+
 bool QRFCEditor::isBackwardAvailable () {
     return (m_iCurrentPositionIdx>0);
 }
 
 bool QRFCEditor::isForwardAvailable () {
     return (m_iCurrentPositionIdx<m_qPositionPath.size()-1);
+}
+
+void QRFCEditor::mousePressEvent(QMouseEvent *ev) {
+    QTextBrowser::mousePressEvent(ev);
+    QToolTip::hideText();
+}
+
+void QRFCEditor::mouseReleaseEvent(QMouseEvent *e) {
+    QTextBrowser::mouseReleaseEvent(e);
+    QTextCursor cur =  this->textCursor();
+    cur.select(QTextCursor::SelectionType::WordUnderCursor);
+    setTextCursor(cur);
+
+    QString text = cur.selectedText();
+    text = text.trimmed();
+    QRegExp regexp(".*[a-z]{2,}.*");
+    if( !regexp.exactMatch(text) ) {
+        return;
+    }
+
+    emit translate(text);
 }
