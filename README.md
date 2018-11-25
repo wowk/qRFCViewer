@@ -26,3 +26,13 @@ License
 --------------
 GNU GPL v2 (see the license file) 
 
+
+<br/>
+<br/>
+
+=====================================<br/><br/>
+在原程序的基础上添加了翻译功能， 在阅读RFC的时候用鼠标选中单词或语句<br/>
+便可显示其译文。现在支持的翻译 API 有百度翻译 和 Yandex翻译。Google<br/>
+翻译 API 收费所以没有加入。<br/>
+<br/>
+通过 Edit-> Translator 可以配置翻译选项。<br/>
