@@ -82,6 +82,11 @@
              <string>en</string>
             </property>
            </item>
+           <item>
+            <property name="text">
+             <string>auto</string>
+            </property>
+           </item>
           </widget>
          </item>
          <item>
@@ -89,6 +94,26 @@
            <item>
             <property name="text">
              <string>zh</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>jp</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>de</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>ja</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>fr</string>
             </property>
            </item>
           </widget>

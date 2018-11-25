@@ -103,7 +103,7 @@ void QRFCEditor::forward () {
 void QRFCEditor::translateFinished(QString s) {
     QFontMetrics fontMetrics(this->font());
     QRect rect = fontMetrics.tightBoundingRect(s);
-    if( rect.width() > 200 ){
+    if( rect.width() > 200 ) {
         rect.setHeight((rect.height() * rect.width() + 200)/200);
         rect.setWidth(200);
     }
@@ -114,7 +114,7 @@ void QRFCEditor::translateFinished(QString s) {
 void QRFCEditor::translateError(QString s) {
 }
 
-void QRFCEditor::selectionChangedSlot(){
+void QRFCEditor::selectionChangedSlot() {
 }
 
 bool QRFCEditor::isBackwardAvailable () {
@@ -135,7 +135,7 @@ void QRFCEditor::mouseReleaseEvent(QMouseEvent *e) {
     QTextBrowser::mouseReleaseEvent(e);
     m_mouseReleased = true;
     QTextCursor cur =  this->textCursor();
-    QString text(cur.selectedText().toLatin1().replace('\n', ' ').data());
+    QString text(cur.selectedText().toLatin1().replace('\x3f', ' ').data());
     QRegExp regexp(".*[a-z]{2,}.*");
     if( !regexp.exactMatch(text) ) {
         return;

@@ -70,9 +70,9 @@ MainWindow::MainWindow() {
     m_translatorSettingDlg = new TranslatorDialog(this);
     m_translator = new Translator(this);
     m_translator->updateTranslatorSlot(
-                m_translatorSettingDlg->translatorSite(),
-                m_translatorSettingDlg->sourceLanguage(),
-                m_translatorSettingDlg->targetLanguage());
+        m_translatorSettingDlg->translatorSite(),
+        m_translatorSettingDlg->sourceLanguage(),
+        m_translatorSettingDlg->targetLanguage());
     connect(m_translatorSettingDlg, SIGNAL(updateTranslatorSig(QString, QString, QString)),
             m_translator, SLOT(updateTranslatorSlot(QString, QString, QString)));
 
@@ -157,8 +157,7 @@ void MainWindow::close_tab(int index) {
     updateMenus();
 }
 
-void MainWindow::translatorSetting()
-{
+void MainWindow::translatorSetting() {
     m_translatorSettingDlg->exec();
 }
 

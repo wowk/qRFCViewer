@@ -6,7 +6,7 @@
 
 
 class TranslatorAPI {
-public:
+  public:
     TranslatorAPI(const QString & s, const QString & t):
         from(s), to(t)
     {}
@@ -15,20 +15,20 @@ public:
     virtual QString translateResult(const QByteArray & data) = 0;
     virtual ~TranslatorAPI() {}
 
-protected:
+  protected:
     QString from;
     QString to;
 };
 
 class BaiduTranslatorAPI : public TranslatorAPI {
-public:
+  public:
     BaiduTranslatorAPI(const QString & s, const QString & t) :
         TranslatorAPI(s, t),
         appid("20181124000238616"),
         key("BWIrrd3ARnhIVX7IJEjk")
     {}
 
-    QNetworkRequest translateRequest(const QString & qword){
+    QNetworkRequest translateRequest(const QString & qword) {
         QString queryStr(qword.toUtf8().data());
         QString salt = QString::asprintf("%u", qrand() % 100000000U);
         QString strSign = appid + queryStr + salt + key;
@@ -39,25 +39,25 @@ public:
         return QNetworkRequest(url);
     }
 
-    QString translateResult(const QByteArray & data){
+    QString translateResult(const QByteArray & data) {
         QJsonDocument doc = QJsonDocument::fromJson(data);
-        //qDebug() << "Baidu: " << doc;
+        qDebug() << "Baidu: " << doc;
         return doc["trans_result"][0]["dst"].toString();
     }
 
-private:
+  private:
     const QString appid;
     const QString key;
 };
 
 class YandexTranslatorAPI : public TranslatorAPI {
-public:
+  public:
     YandexTranslatorAPI(const QString & s, const QString & t) :
         TranslatorAPI(s, t),
         key("trnsl.1.1.20181124T160248Z.ee4557c60a06fbac.05af9931631627667f6d431932bb4de2a4ad8e8a")
     {}
 
-    QNetworkRequest translateRequest(const QString & qword){
+    QNetworkRequest translateRequest(const QString & qword) {
         QString urlStr = "https://translate.yandex.net/api/v1.5/tr.json/translate?";
         urlStr = urlStr + "lang=" + from + "-" + to;
         urlStr = urlStr + "&key=" + key;
@@ -65,13 +65,13 @@ public:
         return QNetworkRequest(QUrl(QUrl(urlStr).toEncoded().data()));
     }
 
-    QString translateResult(const QByteArray & data){
+    QString translateResult(const QByteArray & data) {
         QJsonDocument doc = QJsonDocument::fromJson(data);
-        //qDebug() << "Yandex: " << doc["text"];
+        qDebug() << "Yandex: " << doc["text"];
         return doc["text"][0].toString();
     }
 
-private:
+  private:
     const QString key;
 };
 
@@ -82,7 +82,7 @@ Translator::Translator(QObject* parent) : QObject(parent) {
 }
 
 void Translator::translate(QString qword) {
-    if( !translatorAPI ){
+    if( !translatorAPI ) {
         translatorAPI = new BaiduTranslatorAPI("en", "zh");
     }
 
@@ -98,15 +98,14 @@ void Translator::reply(QNetworkReply *reply) {
     emit finish(translatorAPI->translateResult(reply->readAll()));
 }
 
-void Translator::updateTranslatorSlot(QString site, QString source, QString target)
-{
-    if( translatorAPI ){
+void Translator::updateTranslatorSlot(QString site, QString source, QString target) {
+    if( translatorAPI ) {
         delete translatorAPI;
     }
     qDebug() << "Update Translator API" << endl;
-    if( site.indexOf("Baidu", 0, Qt::CaseInsensitive) >= 0 ){
+    if( site.indexOf("Baidu", 0, Qt::CaseInsensitive) >= 0 ) {
         translatorAPI = new BaiduTranslatorAPI(source, target);
-    }else{
+    } else {
         translatorAPI = new YandexTranslatorAPI(source, target);
     }
 }

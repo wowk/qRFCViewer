@@ -7,14 +7,13 @@ namespace Ui {
 class TranslatorDialog;
 }
 
-class TranslatorDialog : public QDialog
-{
+class TranslatorDialog : public QDialog {
     Q_OBJECT
 
-signals:
+  signals:
     void updateTranslatorSig(QString, QString, QString);
 
-public:
+  public:
     explicit TranslatorDialog(QWidget *parent = 0);
     ~TranslatorDialog();
 
@@ -28,12 +27,12 @@ public:
 
     void showEvent(QShowEvent* ev);
 
-private slots:
+  private slots:
 
     void on_cancelButton_clicked();
     void on_applyButton_clicked();
 
-private:
+  private:
     Ui::TranslatorDialog *ui;
 
     QString site;
