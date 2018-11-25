@@ -44,6 +44,9 @@
 #include "cdialogfind.h"
 #include "qrfceditor.h"
 #include "cprintdialog.h"
+#include "translator.h"
+#include "translatordialog.h"
+
 
 MainWindow::MainWindow() {
     /* OSX style */
@@ -64,6 +67,15 @@ MainWindow::MainWindow() {
     connect(windowMapper, SIGNAL(mapped(QWidget *)),
     workspace, SLOT(setActiveWindow(QWidget *)));
     */
+    m_translatorSettingDlg = new TranslatorDialog(this);
+    m_translator = new Translator(this);
+    m_translator->updateTranslatorSlot(
+                m_translatorSettingDlg->translatorSite(),
+                m_translatorSettingDlg->sourceLanguage(),
+                m_translatorSettingDlg->targetLanguage());
+    connect(m_translatorSettingDlg, SIGNAL(updateTranslatorSig(QString, QString, QString)),
+            m_translator, SLOT(updateTranslatorSlot(QString, QString, QString)));
+
     readSettings();
 
     m_pRFCLoader = new QRFCLoader(this);
@@ -90,7 +102,6 @@ MainWindow::MainWindow() {
     connect(m_pDialogFind, SIGNAL(findnext()), this, SLOT(findnext()));
     setWindowTitle(tr("qRFCView"));
     //m_pRFCLoader->GetFile(794);
-
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
@@ -146,6 +157,11 @@ void MainWindow::close_tab(int index) {
     updateMenus();
 }
 
+void MainWindow::translatorSetting()
+{
+    m_translatorSettingDlg->exec();
+}
+
 void MainWindow::getrfc() {
     // Load a RFC number
     bool bOK;
@@ -194,7 +210,6 @@ void MainWindow::findprev() {
             statusBar()->showMessage(tr("No more occurence"), 3000);
         else
             statusBar()->clearMessage();
-
     }
 }
 
@@ -316,6 +331,10 @@ MdiChild *MainWindow::createMdiChild(const QString &qTitle) {
     connect(child->m_pTextEdit, SIGNAL(RFCReq( uint32_t )), this, SLOT(RFCLoad( uint32_t  )) );
     connect(child->m_pTextEdit, SIGNAL(forwardAvailable(bool)), forwardAct, SLOT(setEnabled(bool)) );
     connect(child->m_pTextEdit, SIGNAL(backwardAvailable(bool)), backwardAct, SLOT(setEnabled(bool)) );
+    connect(child->m_pTextEdit, SIGNAL(translate(QString)), m_translator, SLOT(translate(QString)));
+    connect(m_translator, SIGNAL(finish(QString)), child->m_pTextEdit, SLOT(translateFinished(QString)));
+    connect(m_translator, SIGNAL(error(QString)), child->m_pTextEdit, SLOT(translateError(QString)));
+
     m_qTabWidget->setCurrentWidget(child);
     return child;
 }
@@ -390,6 +409,9 @@ void MainWindow::createActions() {
     separatorAct->setSeparator(true);
     */
 
+    setTranslatorAct = new QAction(tr("Translator"), this);
+    connect(setTranslatorAct, SIGNAL(triggered()), this, SLOT(translatorSetting()));
+
     aboutAct = new QAction(tr("&About"), this);
     aboutAct->setStatusTip(tr("Show the application's About box"));
     connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
@@ -415,6 +437,7 @@ void MainWindow::createMenus() {
     editMenu->addAction(findnextAct);
     editMenu->addSeparator();
     editMenu->addAction(setFontAct);
+    editMenu->addAction(setTranslatorAct);
 
     //windowMenu = menuBar()->addMenu(tr("&Window"));
     //connect(windowMenu, SIGNAL(aboutToShow()), this, SLOT(updateWindowMenu()));
@@ -455,6 +478,9 @@ void MainWindow::readSettings() {
     m_qFont.setPointSize(settings.value("Font_size",   m_qFont.pointSize()).toInt() );
     m_qFont.setWeight(settings.value("Font_weight", m_qFont.weight()).toInt());
     m_qFont.setItalic(settings.value("Font_italic", m_qFont.italic()).toBool());
+    m_translatorSettingDlg->setTranslatorSite(settings.value("TranslatorSite", "Yandex").toString());
+    m_translatorSettingDlg->setSourceLanguage(settings.value("TranslatorSource", "en").toString());
+    m_translatorSettingDlg->setTargetLanguage(settings.value("TranslatorTarget", "zh").toString());
 
     move(pos);
     resize(size);
@@ -468,6 +494,9 @@ void MainWindow::writeSettings() {
     settings.setValue("Font_size",   m_qFont.pointSize());
     settings.setValue("Font_weight", m_qFont.weight());
     settings.setValue("Font_italic", m_qFont.italic());
+    settings.setValue("TranslatorSite", m_translatorSettingDlg->translatorSite());
+    settings.setValue("TranslatorSource", m_translatorSettingDlg->sourceLanguage());
+    settings.setValue("TranslatorTarget", m_translatorSettingDlg->targetLanguage());
 }
 
 MdiChild *MainWindow::activeMdiChild() {

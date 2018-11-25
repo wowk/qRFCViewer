@@ -35,6 +35,9 @@ class QProgressBar;
 class CDialogFind;
 class QTabWidget;
 class QFileDialog;
+class Translator;
+class TranslatorDialog;
+
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -60,6 +63,7 @@ class MainWindow : public QMainWindow {
     void updateWindowMenu();
     void open_dialog_finished(int result);
     void close_tab(int index);
+    void translatorSetting();
     MdiChild *createMdiChild(const QString &qTitle);
 
     void RFCStart(const QString &qFilename);
@@ -93,6 +97,7 @@ class MainWindow : public QMainWindow {
     QAction *exitAct;
     QAction *copyAct;
     QAction *setFontAct;
+    QAction *setTranslatorAct;
     /*
     QAction *closeAct;
     QAction *closeAllAct;
@@ -111,6 +116,8 @@ class MainWindow : public QMainWindow {
     uint8_t m_iDefaultDirectory;
     QRFCLoader *m_pRFCLoader;
     CDialogFind *m_pDialogFind;
+    Translator* m_translator;
+    TranslatorDialog *m_translatorSettingDlg;
 };
 
 #endif

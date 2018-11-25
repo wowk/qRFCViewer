@@ -12,7 +12,8 @@ HEADERS += mainwindow.h \
            rfcloader.h \
            cdialogfind.h \
            cprintdialog.h \
-           translator.h
+           translator.h \
+    translatordialog.h
 
 SOURCES += rfcview.cpp \
            mainwindow.cpp \
@@ -24,12 +25,14 @@ SOURCES += rfcview.cpp \
            rfcloader.cpp \
            cdialogfind.cpp \
            cprintdialog.cpp \
-           translator.cpp
+           translator.cpp \
+    translatordialog.cpp
 TARGET=../bin/qRFCView
 CONFIG += qt release
 QT += network core gui widgets printsupport
 RESOURCES += rfcview.qrc
-FORMS += setdirectory_dlg.ui find_dlg.ui
+FORMS += setdirectory_dlg.ui find_dlg.ui \
+    translatordialog.ui
 ICON = ../images/rfcview.icns
 QMAKE_MACOSX_DEPLOYMENT_TARGET=10.7
 

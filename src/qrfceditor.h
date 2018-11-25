@@ -54,8 +54,10 @@ class QRFCEditor : public QTextBrowser {
     void forward ();
     void translateFinished(QString s);
     void translateError(QString s);
+    void selectionChangedSlot();
 
   private:
+    bool m_mouseReleased;
     QTranslator* m_translator;
     QList<int> m_qPositionPath;
     int m_iCurrentPositionIdx;

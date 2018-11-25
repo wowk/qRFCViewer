@@ -25,10 +25,7 @@
 QRFCEditor::QRFCEditor(QWidget *parent)
     : QTextBrowser(parent) {
     m_iCurrentPositionIdx=0;
-    m_translator = new QTranslator(this);
-    connect(this, SIGNAL(translate(QString)), m_translator, SLOT(translate(QString)));
-    connect(m_translator, SIGNAL(finish(QString)), this, SLOT(translateFinished(QString)));
-    connect(m_translator, SIGNAL(error(QString)), this, SLOT(translateError(QString)));
+    m_mouseReleased = true;
 }
 
 
@@ -105,11 +102,19 @@ void QRFCEditor::forward () {
 
 void QRFCEditor::translateFinished(QString s) {
     QFontMetrics fontMetrics(this->font());
-    QToolTip::showText(this->cursor().pos(), s, this, fontMetrics.tightBoundingRect(s), 2000);
+    QRect rect = fontMetrics.tightBoundingRect(s);
+    if( rect.width() > 200 ){
+        rect.setHeight((rect.height() * rect.width() + 200)/200);
+        rect.setWidth(200);
+    }
+    QString tips = "<html><body><p width=200>" + s + "</p></body></html>";
+    QToolTip::showText(this->cursor().pos(), tips, this, rect, 10000);
 }
 
 void QRFCEditor::translateError(QString s) {
+}
 
+void QRFCEditor::selectionChangedSlot(){
 }
 
 bool QRFCEditor::isBackwardAvailable () {
@@ -123,16 +128,14 @@ bool QRFCEditor::isForwardAvailable () {
 void QRFCEditor::mousePressEvent(QMouseEvent *ev) {
     QTextBrowser::mousePressEvent(ev);
     QToolTip::hideText();
+    m_mouseReleased = false;
 }
 
 void QRFCEditor::mouseReleaseEvent(QMouseEvent *e) {
     QTextBrowser::mouseReleaseEvent(e);
+    m_mouseReleased = true;
     QTextCursor cur =  this->textCursor();
-    cur.select(QTextCursor::SelectionType::WordUnderCursor);
-    setTextCursor(cur);
-
-    QString text = cur.selectedText();
-    text = text.trimmed();
+    QString text(cur.selectedText().toLatin1().replace('\n', ' ').data());
     QRegExp regexp(".*[a-z]{2,}.*");
     if( !regexp.exactMatch(text) ) {
         return;

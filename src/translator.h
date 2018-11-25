@@ -4,15 +4,17 @@
 #include <QString>
 #include <QNetworkAccessManager>
 
+class TranslatorAPI;
 
-class QTranslator : public QObject {
+class Translator : public QObject {
     Q_OBJECT
   public:
-    explicit QTranslator(QObject* parent);
+    explicit Translator(QObject* parent);
 
   public slots:
     void translate(QString s);
     void reply(QNetworkReply *reply);
+    void updateTranslatorSlot(QString, QString, QString);
 
   signals:
     void finish(QString  s);
@@ -22,8 +24,7 @@ class QTranslator : public QObject {
     QNetworkAccessManager* netAccessMgr;
 
   private:
-    static const QString appid;
-    static const QString key;
+    TranslatorAPI* translatorAPI;
 };
 
 #endif
