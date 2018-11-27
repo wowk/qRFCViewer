@@ -57,6 +57,7 @@ void QRFCLoader::GetFile(uint32_t iRFCNum) {
     QString qFilename;
     qFilename = m_qDir + "/rfc" + QString::number(iRFCNum) +".txt";
     QFile qFile(qFilename);
+    qFile.open(QFile::OpenModeFlag::ReadOnly);
     if ( qFile.isOpen() && qFile.size() > 0 ) {
         qFile.close();
         emit done(qFilename);
