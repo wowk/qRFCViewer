@@ -154,6 +154,7 @@ void QRFCEditor::mouseReleaseEvent(QMouseEvent *e) {
     m_mouseReleased = true;
     QTextCursor cur =  this->textCursor();
     QString text(cur.selectedText().toLatin1().replace('\x3f', ' ').data());
+    text = text.trimmed();
     QRegExp regexp(".*[a-z]{2,}.*");
     if( !regexp.exactMatch(text) ) {
         return;
