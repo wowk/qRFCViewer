@@ -108,7 +108,6 @@ void Translator::translateSlot(QString qword, QString t) {
 
     QNetworkReply* reply = netAccessMgr->get(translatorAPI->translateRequest(qword));
     m_query[reply] = qword;
-    printf("reply:0x%.16lX, t: %s\n", reply, qword.toStdString().data());
 }
 
 void Translator::replySlot(QNetworkReply *reply) {

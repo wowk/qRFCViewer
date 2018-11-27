@@ -78,6 +78,7 @@ void TranslatorDialog::on_applyButton_clicked() {
     this->setSourceLanguage(ui->comboBoxSourceLang->currentText());
     this->setTargetLanguage(ui->comboBoxTargetLang->currentText());
     emit updateTranslatorSig(site, source, target);
+    this->setCacheFile(ui->cacheFileLineEdit->text());
     this->close();
 }
 

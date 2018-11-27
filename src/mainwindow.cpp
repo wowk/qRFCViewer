@@ -484,7 +484,7 @@ void MainWindow::createStatusBar() {
 }
 
 void MainWindow::readSettings() {
-    QSettings settings("MELCO", "qRFCView");
+    QSettings settings("qRFCView", "qRFCView");
     QPoint pos = settings.value("pos", QPoint(200, 200)).toPoint();
     QSize size = settings.value("size", QSize(640, 480)).toSize();
     m_qFont.setFamily(settings.value("Font_family", m_qFont.family()).toString() );
@@ -501,7 +501,7 @@ void MainWindow::readSettings() {
 }
 
 void MainWindow::writeSettings() {
-    QSettings settings("MELCO", "qRFCView");
+    QSettings settings("qRFCView", "qRFCView");
     settings.setValue("pos", pos());
     settings.setValue("size", size());
     settings.setValue("Font_family", m_qFont.family());
@@ -511,6 +511,7 @@ void MainWindow::writeSettings() {
     settings.setValue("TranslatorSite", m_translatorSettingDlg->translatorSite());
     settings.setValue("TranslatorSource", m_translatorSettingDlg->sourceLanguage());
     settings.setValue("TranslatorTarget", m_translatorSettingDlg->targetLanguage());
+    settings.setValue("TranslatorCacheFile", m_translatorSettingDlg->cacheFile());
 }
 
 MdiChild *MainWindow::activeMdiChild() {
