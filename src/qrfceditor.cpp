@@ -100,7 +100,7 @@ void QRFCEditor::forward () {
     }
 }
 
-void QRFCEditor::translateFinished(QString s) {
+void QRFCEditor::showTranslatedText(const QString & s){
     QFontMetrics fontMetrics(this->font());
     QRect rect = fontMetrics.tightBoundingRect(s);
     if( rect.width() > 200 ) {
@@ -111,7 +111,25 @@ void QRFCEditor::translateFinished(QString s) {
     QToolTip::showText(this->cursor().pos(), tips, this, rect, 10000);
 }
 
-void QRFCEditor::translateError(QString s) {
+void QRFCEditor::translateFinishedSlot(QString s, QString t) {
+    showTranslatedText(t);
+    emit addCacheSig(s, t);
+}
+
+void QRFCEditor::foundCacheSlot(QString s, QString t)
+{
+    qDebug() << "Cached Value found";
+    showTranslatedText(t);
+}
+
+void QRFCEditor::foundNoCacheSlot(QString s, QString t)
+{
+    qDebug() << "No Cached Value found";
+    emit translateSig(s, t);
+}
+
+void QRFCEditor::translateErrorSlot(QString s, QString t) {
+    qDebug() << "Translate " << s << " Error: " << t;
 }
 
 void QRFCEditor::selectionChangedSlot() {
@@ -141,5 +159,5 @@ void QRFCEditor::mouseReleaseEvent(QMouseEvent *e) {
         return;
     }
 
-    emit translate(text);
+    emit findCacheSig(text, "");
 }

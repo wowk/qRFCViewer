@@ -68,15 +68,18 @@ MainWindow::MainWindow() {
     workspace, SLOT(setActiveWindow(QWidget *)));
     */
     m_translatorSettingDlg = new TranslatorDialog(this);
-    m_translator = new Translator(this);
+    m_translator        = new Translator(this);
+    m_translatorCache   = new TranslatorCache(this);
+
+    readSettings();
+
+    m_translatorCache->loadCache(m_translatorSettingDlg->cacheFile());
     m_translator->updateTranslatorSlot(
         m_translatorSettingDlg->translatorSite(),
         m_translatorSettingDlg->sourceLanguage(),
         m_translatorSettingDlg->targetLanguage());
     connect(m_translatorSettingDlg, SIGNAL(updateTranslatorSig(QString, QString, QString)),
             m_translator, SLOT(updateTranslatorSlot(QString, QString, QString)));
-
-    readSettings();
 
     m_pRFCLoader = new QRFCLoader(this);
     connect(m_pRFCLoader, SIGNAL(done(QString)),this, SLOT(RFCReady(QString)));
@@ -330,9 +333,20 @@ MdiChild *MainWindow::createMdiChild(const QString &qTitle) {
     connect(child->m_pTextEdit, SIGNAL(RFCReq( uint32_t )), this, SLOT(RFCLoad( uint32_t  )) );
     connect(child->m_pTextEdit, SIGNAL(forwardAvailable(bool)), forwardAct, SLOT(setEnabled(bool)) );
     connect(child->m_pTextEdit, SIGNAL(backwardAvailable(bool)), backwardAct, SLOT(setEnabled(bool)) );
-    connect(child->m_pTextEdit, SIGNAL(translate(QString)), m_translator, SLOT(translate(QString)));
-    connect(m_translator, SIGNAL(finish(QString)), child->m_pTextEdit, SLOT(translateFinished(QString)));
-    connect(m_translator, SIGNAL(error(QString)), child->m_pTextEdit, SLOT(translateError(QString)));
+    connect(child->m_pTextEdit, SIGNAL(translateSig(QString, QString)),
+            m_translator, SLOT(translateSlot(QString, QString)));
+    connect(child->m_pTextEdit, SIGNAL(findCacheSig(QString, QString)),
+            m_translatorCache, SLOT(findCacheSlot(QString, QString)));
+    connect(child->m_pTextEdit, SIGNAL(addCacheSig(QString, QString)),
+            m_translatorCache, SLOT(addCacheSlot(QString, QString)));
+    connect(m_translator, SIGNAL(translateFinishSig(QString, QString)),
+            child->m_pTextEdit, SLOT(translateFinishedSlot(QString, QString)));
+    connect(m_translator, SIGNAL(translateErrorSig(QString, QString)),
+            child->m_pTextEdit, SLOT(translateErrorSlot(QString, QString)));
+    connect(m_translatorCache, SIGNAL(foundCacheSig(QString, QString)),
+            child->m_pTextEdit, SLOT(foundCacheSlot(QString, QString)));
+    connect(m_translatorCache, SIGNAL(foundNoCacheSig(QString, QString)),
+            child->m_pTextEdit, SLOT(foundNoCacheSlot(QString, QString)));
 
     m_qTabWidget->setCurrentWidget(child);
     return child;
@@ -480,6 +494,7 @@ void MainWindow::readSettings() {
     m_translatorSettingDlg->setTranslatorSite(settings.value("TranslatorSite", "Yandex").toString());
     m_translatorSettingDlg->setSourceLanguage(settings.value("TranslatorSource", "en").toString());
     m_translatorSettingDlg->setTargetLanguage(settings.value("TranslatorTarget", "zh").toString());
+    m_translatorSettingDlg->setCacheFile(settings.value("TranslatorCacheFile", "qRFCTranslatorCache").toString());
 
     move(pos);
     resize(size);

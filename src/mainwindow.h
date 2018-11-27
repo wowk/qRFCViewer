@@ -36,6 +36,7 @@ class CDialogFind;
 class QTabWidget;
 class QFileDialog;
 class Translator;
+class TranslatorCache;
 class TranslatorDialog;
 
 
@@ -117,6 +118,7 @@ class MainWindow : public QMainWindow {
     QRFCLoader *m_pRFCLoader;
     CDialogFind *m_pDialogFind;
     Translator* m_translator;
+    TranslatorCache* m_translatorCache;
     TranslatorDialog *m_translatorSettingDlg;
 };
 

@@ -44,16 +44,21 @@ class QRFCEditor : public QTextBrowser {
     bool isForwardAvailable ();
     void mousePressEvent(QMouseEvent *ev);
     void mouseReleaseEvent(QMouseEvent *e);
+    void showTranslatedText(const QString & s);
 
   signals:
     void RFCReq(uint32_t); // Signal emitted when a new RFC is required
-    void translate(QString s);
+    void translateSig(QString s, QString t);
+    void findCacheSig(QString s, QString t);
+    void addCacheSig(QString s, QString t);
 
   public slots:
     void backward ();
     void forward ();
-    void translateFinished(QString s);
-    void translateError(QString s);
+    void translateFinishedSlot(QString s, QString t);
+    void foundCacheSlot(QString s, QString t);
+    void foundNoCacheSlot(QString s, QString t);
+    void translateErrorSlot(QString s, QString t);
     void selectionChangedSlot();
 
   private:
